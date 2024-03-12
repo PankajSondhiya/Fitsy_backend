@@ -8,21 +8,35 @@ const {
 } = require("../controllers/prescription.controller");
 
 module.exports = function (app) {
-  app.post("/fitsy/api/v1/prescriptions", createPrescription);
+  app.post("/fitsy/api/v1/prescriptions", [verifyToken], createPrescription);
 
-  app.get("/fitsy/api/v1/prescriptions/:id", getPrescriptionById);
+  app.get(
+    "/fitsy/api/v1/prescriptions/:id",
+    [verifyToken],
+    getPrescriptionById
+  );
 
-  app.put("/fitsy/api/v1/prescriptions/:id", updatePrescriptionById);
+  app.put(
+    "/fitsy/api/v1/prescriptions/:id",
+    [verifyToken],
+    updatePrescriptionById
+  );
 
-  app.delete("/fitsy/api/v1/prescriptions/:id", deletePrescriptionById);
+  app.delete(
+    "/fitsy/api/v1/prescriptions/:id",
+    [verifyToken],
+    deletePrescriptionById
+  );
 
   app.get(
     "/fitsy/api/v1/prescriptions/patient/:id",
+    [verifyToken],
     getAllPrescriptionByThePatientId
   );
 
   app.get(
     "/fitsy/api/v1/prescriptions/doctor/:id",
+    [verifyToken],
     getAllPrescriptionByTheDoctorId
   );
 };

@@ -10,9 +10,9 @@ const { isAdmin } = require("../middleware/auth.jwt");
 module.exports = function (app) {
   app.post("/fitsy/api/v1/hospitals", [isAdmin], createHospital);
 
-  app.get("/fitsy/api/v1/hospitals/:id", getHospitalById);
+  app.get("/fitsy/api/v1/hospitals/:id", [verifyToken], getHospitalById);
 
-  app.get("/fitsy/api/v1/hospitals", getAllHospitals);
+  app.get("/fitsy/api/v1/hospitals", [verifyToken], getAllHospitals);
 
   app.put("/fitsy/api/v1/hospitals/:id", [isAdmin], updateHospitalById);
 
