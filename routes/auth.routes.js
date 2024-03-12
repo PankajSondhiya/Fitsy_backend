@@ -1,9 +1,5 @@
 const { verify } = require("jsonwebtoken");
-const {
-  signIn,
-  signUp,
-  signInWithOTP,
-} = require("../controllers/auth.controller");
+const { signIn, signUp } = require("../controllers/auth.controller");
 const { verifyToken } = require("../middleware/auth.jwt");
 
 module.exports = function (app) {

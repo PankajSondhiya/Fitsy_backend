@@ -6,6 +6,7 @@ const {
   getAllPrescriptionByTheDoctorId,
   getAllPrescriptionByThePatientId,
 } = require("../controllers/prescription.controller");
+const { verifyToken } = require("../middleware/auth.jwt");
 
 module.exports = function (app) {
   app.post("/fitsy/api/v1/prescriptions", [verifyToken], createPrescription);

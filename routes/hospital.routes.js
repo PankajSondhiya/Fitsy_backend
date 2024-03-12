@@ -5,7 +5,7 @@ const {
   deleteHospitalById,
   getAllHospitals,
 } = require("../controllers/hospital.controller");
-const { isAdmin } = require("../middleware/auth.jwt");
+const { isAdmin, verifyToken } = require("../middleware/auth.jwt");
 
 module.exports = function (app) {
   app.post("/fitsy/api/v1/hospitals", [isAdmin], createHospital);

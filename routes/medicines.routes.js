@@ -5,6 +5,7 @@ const {
   updateMedicinesbyId,
   getAllMedicines,
 } = require("../controllers/medicines.controller");
+const { verifyToken } = require("../middleware/auth.jwt");
 
 module.exports = function (app) {
   app.post("/fitsy/api/v1/medicines", [verifyToken], createMedicine);
