@@ -4,12 +4,11 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const admin = require("../configs/firebaseAdmin");
 const jwt = require("jsonwebtoken");
-// Modified signUp function to include Firebase UID
+
 async function signUp(req, res) {
   const { name, email, userId, password, userType } = req.body;
 
   try {
-    // Create user in Firebase Auth
     const userRecord = await admin.auth().createUser({
       email: email,
       password: password,
