@@ -30,7 +30,10 @@ async function getDoctorById(req, res) {
 
 async function updateDoctorById(req, res) {
   const id = req.params.id;
-  await Doctor.findByIdAndUpdate(id, req.body);
+
+  const doctor = await Doctor.findOne({ user: id });
+  console.log(doctor._id);
+  await Doctor.findByIdAndUpdate(doctor._id, req.body);
 
   res.status(200).send({
     message: `Doctor with ID ${id} updated successfully`,

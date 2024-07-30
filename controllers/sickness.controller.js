@@ -37,12 +37,12 @@ async function getAllSickness(req, res) {
   const queryObj = {};
 
   if (req.userType === USERTYPES.PATIENT) {
-    queryObj.patient = user._id;
+    queryObj.patient = user?._id;
   }
   if (req.userType === USERTYPES.DOCTOR) {
     const doc_id = req._id;
     const doctor = await Doctor.findOne({ user: doc_id });
-    console.log("doctor===================", doctor);
+
     queryObj.doctor = doctor._id;
   }
 
@@ -66,10 +66,13 @@ async function getAllSickness(req, res) {
 async function updateSicknessById(req, res) {
   const id = req.params.id;
 
-  await Sickness.findByIdAndUpdate(id, req.body);
+  const updatedSickness = await Sickness.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
 
   res.status(200).send({
     message: `Sickness with ID ${id} updated successfully`,
+    updatedSickness,
   });
 }
 async function deleteSicknessById(req, res) {

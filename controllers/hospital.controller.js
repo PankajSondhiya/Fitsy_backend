@@ -20,9 +20,12 @@ async function getHospitalById(req, res) {
 async function updateHospitalById(req, res) {
   const id = req.params.id;
 
-  await Hospital.findByIdAndUpdate(id, req.body);
+  const UpdatedHospital = await Hospital.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
   res.status(200).send({
     message: `Hospital with the ${id} updated succesfully`,
+    UpdatedHospital,
   });
 }
 async function getAllHospitals(req, res) {

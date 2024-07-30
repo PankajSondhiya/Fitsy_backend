@@ -11,9 +11,27 @@ async function createAppoinment(req, res) {
 }
 
 async function updateAppoinment(req, res) {
-  const id = req.params.id;
-  await Appointment.findByIdAndUpdate(id, req.body);
-  res.status(200).send("appoinment updated succcessfully");
+  try {
+    const id = req.params.id;
+
+    const UpdatedAppoinment = await Appointment.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json({
+      message: "Appointment updated successfully",
+      appointment: UpdatedAppoinment,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred",
+      error: error.message,
+    });
+  }
 }
 
 async function deleteAppoinment(req, res) {
@@ -31,13 +49,15 @@ async function getAllAppoinment(req, res) {
   if (req.userType === USERTYPES.ADMIN) {
   }
   if (req.userType === USERTYPES.DOCTOR) {
-    const doc_id = req._id;
+    const doc_id = user?._id;
+    console.log(doc_id);
+
     const doctor = await Doctor.findOne({ user: doc_id });
-    queryObj.doctor = doctor._id;
     console.log(doctor);
+    queryObj.doctor = doctor?._id;
   }
   if (req.userType === USERTYPES.PATIENT) {
-    queryObj.userId = user._id;
+    queryObj.userId = user?._id;
   }
 
   try {
@@ -50,7 +70,7 @@ async function getAllAppoinment(req, res) {
         },
       })
       .populate("hospital");
-    res.status(200).send(appointments);
+    res.status(201).send(appointments);
     console.log(appointments);
   } catch (error) {
     console.log(error);

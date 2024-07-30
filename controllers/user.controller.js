@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/user.model");
+const admin = require("../configs/firebaseAdmin");
 
 async function getAllUsers(req, res) {
   const users = await User.find({});
@@ -14,18 +15,28 @@ async function getUserById(req, res) {
 
 async function deleteUserById(req, res) {
   const id = req.params.id;
+  const { UID } = req.body;
+  console.log(UID);
+  console.log(id);
+
   await User.findByIdAndDelete(id);
+  await admin.auth().deleteUser(UID);
   res
     .status(200)
     .send({ message: `user with the ID:${id} deleted successfully` });
 }
 
 async function UpdateUserById(req, res) {
+  const { firebaseUid, email } = req.body;
   const id = req.params.id;
-  await User.findByIdAndUpdate(id, req.body);
-  res
-    .status(200)
-    .send({ message: `user with the ID:${id} updated successfully` });
+  await admin.auth().updateUser(firebaseUid, {
+    email: email,
+  });
+  const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+  res.status(200).send({
+    message: `user with the ID:${id} updated successfully`,
+    updatedUser,
+  });
 }
 module.exports = {
   getAllUsers,
