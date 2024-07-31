@@ -15,7 +15,7 @@ const prescriptionSchema = new mongoose.Schema({
     type: [String],
   },
   duration: {
-    type: string,
+    type: String,
   },
 });
 
